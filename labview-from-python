@@ -1,0 +1,18 @@
+from labview_automation import LabVIEW
+lv = LabVIEW()
+lv.start() # Launches the active LabVIEW with the listener VI
+with lv.client() as c:
+    control_values = {
+        "DBL Control": 5.0,
+        "String Control": "Hello World!",
+        "Error In": {
+            "status": False,
+            "code": 0,
+            "source": ""
+        }
+    }
+    indicators = c.run_vi_synchronous(
+        vi_path, control_values)
+    print(indicators['Result'])
+    error_message = c.describe_error(indicators['Error Out'])
+lv.kill() # Stop LabVIEW
